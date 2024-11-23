@@ -9,15 +9,16 @@ export class GithubApi {
     this.GITHUB_TOKEN = `${process.env.GITHUB_TOKEN}`;
   }
 
-  parseGitPatch(patchContent: string, completeFileContext: string):{ changes: ICodeChange[], placement: ICodePlacement[] } {
+  parseGitPatch(patchContent: string, completeFileContext: string):{ changes: ICodeChange[], placements: ICodePlacement[] } {
     const changes: ICodeChange[] = [];
-    const placement: ICodePlacement[] = [];
+    const placements: ICodePlacement[] = [];
     const lines = patchContent.split('\n');
     let changeIndex = 0;
     let lineIndex = 0;
-    const line = lines[lineIndex];
     while (lineIndex < lines.length){
-      const match = line.match(/@@ -(\d+),(\d+) \+(\d+),(\d+) @@/);
+      const line = lines[lineIndex];
+      let match = line.match(/@@ -(\d+),(\d+) \+(\d+),(\d+) @@/);
+      console.log(match);
       if (match) {
         const newStart = parseInt(match[3], 10);
         const newLength = parseInt(match[4], 10);
@@ -27,12 +28,15 @@ export class GithubApi {
           changePatch.push(lines[lineIndex]);
           lineIndex++;
         }
+        match = null;
         changeIndex ++;
-        changes.push({id: changeIndex, after_change: changePatch.join('\n'), file_content: completeFileContext});
-        placement.push({id: changeIndex, lineToAddComment: newStart, commentLength: newLength});
+        changes.push({id: changeIndex, afterChange: changePatch.join('\n'), fileContent: completeFileContext});
+        placements.push({id: changeIndex, lineToAddComment: newStart, commentLength: newLength});
       }
     }
-    return { changes, placement };
+    console.log(changes);
+    console.log(placements);
+    return { changes, placements };
   }
 
   async getPRFiles(props: { owner: string; repo: string; pullNumber: string }) {
@@ -46,7 +50,6 @@ export class GithubApi {
           Accept: "application/vnd.github.v3+json",
         },
       });
-
       return response.json();
     } catch (error) {
       throw error;
@@ -64,8 +67,8 @@ export class GithubApi {
         },
       });
       const content = await response.text();
-
-      return content;
+      const lines = content.split('\n').length;
+      return { content, lines };
     } catch (error) {
       console.log(error);
       throw error;
@@ -110,7 +113,6 @@ export class GithubApi {
       });
 
       const jsonResponse = await response.json();
-      console.log(jsonResponse);
       return jsonResponse;
     } catch (error) {
       throw error;

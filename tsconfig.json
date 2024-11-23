@@ -23,6 +23,6 @@
       "@/ui/*": ["./src/ui/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/server/external-services/bedrock.ts"],
   "exclude": ["node_modules"]
 }
