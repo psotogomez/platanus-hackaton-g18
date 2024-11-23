@@ -12,7 +12,7 @@ export default function Home() {
           GitHub repositories.
         </P>
       </div>
-      <div className="flex flex-col w-3/5 border border-gray-200 rounded-lg p-4">
+      <div className="flex flex-col w-3/5 border border-dark rounded-lg p-4 shadow-lg max-w-3xl bg-muted">
         <WithPullRequestReviewConfigurationForm>
           <PullRequestReviewConfigurationForm />
         </WithPullRequestReviewConfigurationForm>

@@ -55,12 +55,12 @@ export const YamlTextBox = ({
       </div>
       <pre
         id="yaml-output"
-        className="p-4 rounded-md bg-gray-100 overflow-x-auto max-h-48 overflow-y-auto"
+        className="p-4 rounded-md bg-background overflow-x-auto max-h-48 overflow-y-auto"
         aria-live="polite"
       >
         <code
           dangerouslySetInnerHTML={{ __html: highlightYaml(stringCode) }}
-          className="font-mono text-sm"
+          className="font-mono text-sm text-dark"
         />
       </pre>
       <div className="flex justify-end">

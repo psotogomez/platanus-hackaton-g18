@@ -45,7 +45,7 @@ export function PullRequestReviewConfigurationForm() {
     <>
       {isLoading ? (
         <div className="flex justify-center items-center min-h-24">
-          <Loader2 className="size-6 animate-spin" />
+          <Loader2 className="size-6 animate-spin text-primary" />
         </div>
       ) : githubActionCode ? (
         <YamlTextBox
@@ -66,7 +66,7 @@ export function PullRequestReviewConfigurationForm() {
               control={form.control}
               name="meaningfulVariableNames"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -74,7 +74,9 @@ export function PullRequestReviewConfigurationForm() {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Review meaningful variable names</FormLabel>
+                    <FormLabel className="text-dark">
+                      Review meaningful variable names
+                    </FormLabel>
                   </div>
                 </FormItem>
               )}
@@ -83,7 +85,7 @@ export function PullRequestReviewConfigurationForm() {
               control={form.control}
               name="codeSecurityBreaches"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -91,7 +93,9 @@ export function PullRequestReviewConfigurationForm() {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Review code security breaches</FormLabel>
+                    <FormLabel className="text-dark">
+                      Review code security breaches
+                    </FormLabel>
                   </div>
                 </FormItem>
               )}
@@ -101,7 +105,7 @@ export function PullRequestReviewConfigurationForm() {
               name="prompt"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <FormLabel className="text-dark">
                     Do you want to review other details of the code?
                   </FormLabel>
                   <FormControl>

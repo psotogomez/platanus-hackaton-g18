@@ -4,29 +4,26 @@ import * as React from "react";
 
 import { cn } from "../libs/utils";
 
-const typographyVariants = cva(
-  "block break-words font-sofia text-cape-cod-950",
-  {
-    variants: {
-      variant: {
-        h1: "text-5xl font-semibold",
-        h2: "text-3xl font-semibold",
-        h3: "text-2xl font-semibold",
-        h4: "text-lg font-semibold",
-        h5: "text-lg font-normal",
-        h6: "text-base font-semibold",
-        p: "text-base font-normal",
-        pMedium: "text-sm font-normal",
-        pSmall: "text-xs font-normal",
-        button: "text-base font-medium",
-        menuItem: "text-base font-normal",
-      },
+const typographyVariants = cva("block break-words font-sofia text-dark", {
+  variants: {
+    variant: {
+      h1: "text-5xl font-semibold",
+      h2: "text-3xl font-semibold",
+      h3: "text-2xl font-semibold",
+      h4: "text-lg font-semibold",
+      h5: "text-lg font-normal",
+      h6: "text-base font-semibold",
+      p: "text-base font-normal",
+      pMedium: "text-sm font-normal",
+      pSmall: "text-xs font-normal",
+      button: "text-base font-medium",
+      menuItem: "text-base font-normal",
     },
-    defaultVariants: {
-      variant: "p",
-    },
-  }
-);
+  },
+  defaultVariants: {
+    variant: "p",
+  },
+});
 
 type VariantPropType = VariantProps<typeof typographyVariants>;
 
