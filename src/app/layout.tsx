@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Pull Request Analyzer",
-  description: "Analyze pull requests",
+  title: "Peer Rhino PR Review",
+  description: "Peer Rhino",
 };
 
 export default function RootLayout({
