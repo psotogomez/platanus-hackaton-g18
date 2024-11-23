@@ -1,12 +1,17 @@
 const axios = require("axios");
-const { GITHUB_TOKEN } = process.env;
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export class DummyExternalService {
   private GITHUB_API_BASE_URL: string;
+  private GITHUB_TOKEN: string;
 
   constructor() {
     this.GITHUB_API_BASE_URL = "https://api.github.com";
+    this.GITHUB_TOKEN = process.env.GITHUB_TOKEN || "";
   }
+
 
   async getPRFiles(
     owner: string,
@@ -17,7 +22,7 @@ export class DummyExternalService {
     try {
       const response = await axios.get(url, {
         headers: {
-          Authorization: GITHUB_TOKEN ? `Bearer ${GITHUB_TOKEN}` : undefined,
+          Authorization: this.GITHUB_TOKEN ? `Bearer ${this.GITHUB_TOKEN}` : undefined,
           Accept: "application/vnd.github.v3+json",
         },
       });
@@ -38,7 +43,7 @@ export class DummyExternalService {
     try {
       const response = await axios.get(url, {
         headers: {
-          Authorization: GITHUB_TOKEN ? `Bearer ${GITHUB_TOKEN}` : undefined,
+          Authorization: this.GITHUB_TOKEN ? `Bearer ${this.GITHUB_TOKEN}` : undefined,
           Accept: "application/vnd.github.v3.raw",
         },
       });
@@ -67,7 +72,7 @@ export class DummyExternalService {
         },
         {
           headers: {
-            Authorization: GITHUB_TOKEN ? `Bearer ${GITHUB_TOKEN}` : undefined,
+            Authorization: this.GITHUB_TOKEN ? `Bearer ${this.GITHUB_TOKEN}` : undefined,
             Accept: "application/vnd.github.v3+json",
           },
         }
