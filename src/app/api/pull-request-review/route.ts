@@ -6,6 +6,7 @@ const pullRequestReviewSchema = z.object({
   owner: z.string(),
   repo: z.string(),
   pullNumber: z.string(),
+  prompt: z.string().optional(),
 });
 
 export async function POST(request: Request) {
@@ -24,7 +25,6 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: "Pull request reviews retrieved successfully",
-      data: [], // Replace with actual data
     });
   } catch (error) {
     return NextResponse.json(
