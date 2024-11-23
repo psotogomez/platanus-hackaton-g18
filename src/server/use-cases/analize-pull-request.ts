@@ -8,7 +8,10 @@ export const analyzePullRequestFiles = async (props: {
   prompt?: string;
 }) => {
   const { owner, repo, pullNumber, prompt } = props;
+  
   console.log("Analyzing PR files...");
+  console.log(`TOKEN ${process.env.GITHUB_TOKEN}`);
+
   const githubApi = new GithubApi();
 
   const files = await githubApi.getPRFiles({ owner, repo, pullNumber });
