@@ -1,17 +1,17 @@
 import { BedrockRuntimeClient, ConverseCommand } from "@aws-sdk/client-bedrock-runtime";
 
 function parseCommentAndCode(responseText: string) {
-  // Regular expression to match content between the ``` markers
-  const codeRegex = /```([\s\S]*?)```/;
+  // Regular expression to match content between ``` and ```
+  const codeRegex = /```[\s\S]*?\n([\s\S]*?)\n```/;
 
   // Extract the first code block
   const codeMatch = responseText.match(codeRegex);
-  const code = codeMatch ? codeMatch[1] : ""; // If there's no code block, return an empty string
+  const code = codeMatch ? codeMatch[1].trim() : ""; // If no code block, return an empty string
 
   // Remove the code block to get the comment
   const comment = responseText.replace(codeRegex, "").trim();
 
-  // Return the parsed comment and the single code block
+  // Return the JSON object with comment and code
   return {
     comment,
     code,
@@ -176,7 +176,12 @@ async function invokeModel(instruction: string, fileContent: string, afterChange
     }
 
     const responseText: string = response.output?.message?.content[0]?.text ?? "No response received.";
-    console.log(responseText)
+
+    const jsonCommentCode = parseCommentAndCode(responseText);
+
+    console.log(jsonCommentCode);
+    return jsonCommentCode;
+
   } catch (error) {
     console.error("Error while sending the request:", error);
   }
