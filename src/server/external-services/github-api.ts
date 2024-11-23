@@ -1,3 +1,5 @@
+import { ICodeChange, ICodePlacement } from "../../interfaces/IPullRequest";
+
 export class GithubApi {
   private GITHUB_API_BASE_URL: string;
   private GITHUB_TOKEN: string;
@@ -5,6 +7,32 @@ export class GithubApi {
   constructor() {
     this.GITHUB_API_BASE_URL = "https://api.github.com";
     this.GITHUB_TOKEN = `${process.env.GITHUB_TOKEN}`;
+  }
+
+  parseGitPatch(patchContent: string, completeFileContext: string):{ changes: ICodeChange[], placement: ICodePlacement[] } {
+    const changes: ICodeChange[] = [];
+    const placement: ICodePlacement[] = [];
+    const lines = patchContent.split('\n');
+    let changeIndex = 0;
+    let lineIndex = 0;
+    const line = lines[lineIndex];
+    while (lineIndex < lines.length){
+      const match = line.match(/@@ -(\d+),(\d+) \+(\d+),(\d+) @@/);
+      if (match) {
+        const newStart = parseInt(match[3], 10);
+        const newLength = parseInt(match[4], 10);
+        lineIndex++;
+        const changePatch = [];
+        while (lineIndex < lines.length && !lines[lineIndex].startsWith('@@')) {
+          changePatch.push(lines[lineIndex]);
+          lineIndex++;
+        }
+        changeIndex ++;
+        changes.push({id: changeIndex, after_change: changePatch.join('\n'), file_content: completeFileContext});
+        placement.push({id: changeIndex, lineToAddComment: newStart, commentLength: newLength});
+      }
+    }
+    return { changes, placement };
   }
 
   async getPRFiles(props: { owner: string; repo: string; pullNumber: string }) {
@@ -82,7 +110,7 @@ export class GithubApi {
       });
 
       const jsonResponse = await response.json();
-
+      console.log(jsonResponse);
       return jsonResponse;
     } catch (error) {
       throw error;
