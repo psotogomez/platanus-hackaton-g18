@@ -36,4 +36,4 @@ jobs:
 
       run: |
         echo "Posting PR details to endpoint..."
-        curl -X POST "$API_URL"           -H "Content-Type: application/json"           -H "Authorization: Bearer $API_KEY"           -d "{"owner":"{{ github.repository_owner }}","repo":"{{ github.event.repository.name }}","pullNumber":"{{ github.event.pull_request.number }}","meaningfulVariableNames":true,"codeSecurityBreaches":true}"
+        curl -X POST "$API_URL"           -H "Content-Type: application/json"           -H "Authorization: Bearer $API_KEY"           -d "{"owner":"{{ github.repository_owner }}","repo":"{{ github.event.repository.name }}","pullNumber":"{{ github.event.pull_request.number }}","meaningfulVariableNames":true,"codeSecurityBreaches":true,"prompt":"Only use hexadecimal code for styling component colors."}"
