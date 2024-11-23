@@ -24,7 +24,7 @@ jobs:
 
       env:
 
-        API_URL: "$"https://platanus-hackaton-g18-csfj8ez2o-psotogomezs-projects.vercel.app/api/pull-request-review"
+        API_URL: "$"https://platanus-hackaton-g18.vercel.app/api/pull-request-review"
 
         API_KEY: "$"sk-proj-1234567890"
 
