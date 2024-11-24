@@ -6,6 +6,7 @@ const pullRequestReviewSchema = z.object({
   owner: z.string(),
   repo: z.string(),
   pullNumber: z.string(),
+  branchName: z.string(),
   meaningfulVariableNames: z.boolean(),
   codeSecurityBreaches: z.boolean(),
   prompt: z.string().optional(),
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
       meaningfulVariableNames,
       codeSecurityBreaches,
       prompt,
+      branchName
     } = pullRequestReviewSchema.parse(body);
 
     await analyzePullRequestFiles({
@@ -36,6 +38,7 @@ export async function POST(request: Request) {
       meaningfulVariableNames,
       codeSecurityBreaches,
       prompt,
+      branchName
     });
 
     return NextResponse.json({
