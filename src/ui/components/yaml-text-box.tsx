@@ -48,14 +48,14 @@ export const YamlTextBox = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full p-4">
+    <div className="flex flex-col gap-4 p-4 w-full">
       <div>
         <H4>{title}</H4>
         <P>{description}</P>
       </div>
       <pre
         id="yaml-output"
-        className="p-4 rounded-md bg-background overflow-x-auto max-h-48 overflow-y-auto"
+        className="p-4 rounded-md bg-gray-100 overflow-x-auto max-h-48 overflow-auto"
         aria-live="polite"
       >
         <code
