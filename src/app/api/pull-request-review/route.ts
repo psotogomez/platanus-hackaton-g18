@@ -17,6 +17,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
+    console.log("request body", request);
+
     const body = await request.json();
     const { owner, repo, pullNumber } = pullRequestReviewSchema.parse(body);
 
