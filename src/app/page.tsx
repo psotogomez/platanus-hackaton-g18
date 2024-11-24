@@ -1,3 +1,5 @@
+"use client";
+
 import { H1, P } from "@/ui/components/typography";
 import { Button } from "@/ui/components/button";
 import { WithPullRequestReviewConfigurationForm } from "./_components/with-pull-request-review-configuration-form";
