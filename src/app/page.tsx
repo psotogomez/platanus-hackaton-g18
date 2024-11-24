@@ -16,6 +16,10 @@ import Image from "next/image";
 import Logo from "@/public/assets/peer-rihno.png";
 
 export default function Home() {
+  const function1 = (a: number, b: number) => {
+    return a + b;
+  };
+
   return (
     <div className="relative size-full min-h-screen overflow-hidden bg-[#7e9eff]">
       <div className="absolute inset-0 overflow-hidden">
@@ -99,6 +103,7 @@ export default function Home() {
           </Link>
         </div>
       </div>
+      {function1(1, 2)}
     </div>
 
     </div>
