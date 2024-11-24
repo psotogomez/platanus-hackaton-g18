@@ -69,12 +69,12 @@ export default function Home() {
         <div className="flex flex-col w-full gap-8">
           <H1 className="text-center !text-background">
             Elevate your code quality with{" "}
-            <span className="text-dark">automated pull request</span> reviews
+            <span className="text-blue-700">automated pull request</span> reviews
             powered by AI.
           </H1>
           <H3 className="text-center !text-background font-normal">
             Seamlessly integrated with GitHub Actions, our tool ensures{" "}
-            <span className="font-bold text-dark">
+            <span className="font-bold text-blue-700">
               every PR gets the attention it deserves
             </span>
             —without waiting on busy team members.
