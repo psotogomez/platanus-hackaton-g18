@@ -7,6 +7,8 @@ const pullRequestReviewSchema = z.object({
   repo: z.string(),
   pullNumber: z.string(),
   branchName: z.string(),
+  meaningfulVariableNames: z.boolean(),
+  codeSecurityBreaches: z.boolean(),
   prompt: z.string().optional(),
 });
 
@@ -19,13 +21,29 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { owner, repo, pullNumber, branchName, prompt } = pullRequestReviewSchema.parse(body);
+    const {
+      owner,
+      repo,
+      pullNumber,
+      meaningfulVariableNames,
+      codeSecurityBreaches,
+      prompt,
+      branchName
+    } = pullRequestReviewSchema.parse(body);
 
-    await analyzePullRequestFiles({ owner, repo, pullNumber, branchName, prompt });
+    await analyzePullRequestFiles({
+      owner,
+      repo,
+      pullNumber,
+      meaningfulVariableNames,
+      codeSecurityBreaches,
+      prompt,
+      branchName
+    });
 
     return NextResponse.json({
       success: true,
-      message: "Pull request reviews retrieved successfully",
+      message: "Pull request review started",
     });
   } catch (error) {
     return NextResponse.json(

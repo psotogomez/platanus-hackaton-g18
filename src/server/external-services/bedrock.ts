@@ -1,4 +1,7 @@
-import { BedrockRuntimeClient, ConverseCommand } from "@aws-sdk/client-bedrock-runtime";
+import {
+  BedrockRuntimeClient,
+  ConverseCommand,
+} from "@aws-sdk/client-bedrock-runtime";
 
 function parseCommentAndCode(responseText: string) {
   // Regular expression to match content between ``` and ```
@@ -8,10 +11,6 @@ function parseCommentAndCode(responseText: string) {
   const codeMatch = responseText.match(codeRegex);
   const code = codeMatch ? codeMatch[1].trim() : ""; // If no code block, return an empty string
 
-  // Remove the code block to get the comment
-  const comment = responseText.replace(codeRegex, "").trim();
-
-  // Return the JSON object with comment and code
   return {
     comment,
     code,
@@ -19,19 +18,23 @@ function parseCommentAndCode(responseText: string) {
 }
 
 const client = new BedrockRuntimeClient({
-    region: `${process.env.AWS_DEFAULT_REGION}`,
-    credentials: {
-        accessKeyId: `${process.env.AWS_ACCESS_KEY_ID}`,
-        secretAccessKey: `${process.env.AWS_SECRET_ACCESS_KEY}`
-    }
+  region: `${process.env.AWS_DEFAULT_REGION}`,
+  credentials: {
+    accessKeyId: `${process.env.AWS_ACCESS_KEY_ID}`,
+    secretAccessKey: `${process.env.AWS_SECRET_ACCESS_KEY}`,
+  },
 });
 
-async function invokeModel(instruction: string, fileContent: string, afterChange: string) {
+async function invokeModel(
+  instruction: string,
+  fileContent: string,
+  afterChange: string
+) {
   const modelId = "anthropic.claude-3-5-sonnet-20240620-v1:0";
 
   interface Prompt {
-      text: string;
-    }
+    text: string;
+  }
 
   const systemPrompt: Prompt[] = [
     {
@@ -276,17 +279,22 @@ export async function POST(request: Request) {
     temperature: 0.3,
   };
 
-  try{
+  try {
     const response = await client.send(
-        new ConverseCommand({
-            modelId,
-            messages: conversation,
-            system: systemPrompt,
-            inferenceConfig: additionalParameters,
-        })
+      new ConverseCommand({
+        modelId,
+        messages: conversation,
+        system: systemPrompt,
+        inferenceConfig: additionalParameters,
+      })
     );
 
-    if (!response || !response.output || !response.output.message || !response.output.message.content) {
+    if (
+      !response ||
+      !response.output ||
+      !response.output.message ||
+      !response.output.message.content
+    ) {
       throw new Error("Failed to retrieve response from model");
     }
 
@@ -300,7 +308,6 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error while sending the request:", error);
   }
-
 }
 
 export default invokeModel;

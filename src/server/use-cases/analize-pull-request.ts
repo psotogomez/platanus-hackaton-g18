@@ -7,13 +7,24 @@ export const analyzePullRequestFiles = async (props: {
   repo: string;
   pullNumber: string;
   branchName: string;
+  meaningfulVariableNames: boolean;
+  codeSecurityBreaches: boolean;
   prompt?: string;
 }) => {
-  const { owner, repo, pullNumber, branchName, prompt } = props;
+  const {
+    owner,
+    repo,
+    pullNumber,
+    meaningfulVariableNames,
+    codeSecurityBreaches,
+    prompt,
+    branchName,
+  } = props;
+  console.log("Analyzing PR files...");
   const githubApi = new GithubApi();
 
   const files = await githubApi.getPRFiles({ owner, repo, pullNumber });
-  const allFileChanges : AllFileChanges = {};
+  const allFileChanges: AllFileChanges = {};
   for (const file of files) {
     console.log(`Analyzing file ${file.filename}`);
     const { content, lines } = await githubApi.getFileContent({
@@ -23,10 +34,15 @@ export const analyzePullRequestFiles = async (props: {
       branch: branchName,
     });
     if (lines > 500) {
-      console.log(`Skipping file ${file.filename} as it has more than 500 lines.`);
+      console.log(
+        `Skipping file ${file.filename} as it has more than 500 lines.`
+      );
       continue;
     }
-    const { changes, placements } = await githubApi.parseGitPatch(file.patch, content);
+    const { changes, placements } = await githubApi.parseGitPatch(
+      file.patch,
+      content
+    );
     const responseFileChanges: FileChange[] = [];
     for (const { id, afterChange, fileContent } of changes) {
       const response = await invokeModel(prompt || '', fileContent, afterChange);
@@ -55,8 +71,8 @@ export const analyzePullRequestFiles = async (props: {
     const latestCommitHash = commitShas[commitShas.length - 1];
     console.log(`Latest commit hash: ${latestCommitHash}`);
 
-    Object.entries(allFileChanges).forEach(([filename, fileChanges ]) => {
-      fileChanges.forEach(async ({id, code, comment}) => {
+    Object.entries(allFileChanges).forEach(([filename, fileChanges]) => {
+      fileChanges.forEach(async ({ id, code }) => {
         const filePlacement = placements.find((p) => p.id === id);
         if (!filePlacement) {
           throw new Error("File placement not found");
