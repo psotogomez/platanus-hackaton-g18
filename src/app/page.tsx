@@ -1,7 +1,4 @@
-"use client";
-
 import { H1, P } from "@/ui/components/typography";
-import { Button } from "@/ui/components/button";
 import { WithPullRequestReviewConfigurationForm } from "./_components/with-pull-request-review-configuration-form";
 import { PullRequestReviewConfigurationForm } from "./_components/pull-request-review-configuration-form";
 
@@ -24,14 +21,7 @@ export default function Home() {
           <PullRequestReviewConfigurationForm />
         </WithPullRequestReviewConfigurationForm>
       </div>
-      <Button
-        onClick={() => function1(1, 2)}
-        style={{
-          backgroundColor: "red",
-        }}
-      >
-        Click me
-      </Button>
+      {function1(1, 2)}
     </div>
   );
 }
