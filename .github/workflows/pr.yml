@@ -33,5 +33,5 @@ jobs:
               \"branchName\": \"${{ github.event.pull_request.head.ref }}\",
               \"meaningfulVariableNames\": true,
               \"codeSecurityBreaches\": true,
-              \"prompt\": \"My team only uses hexadecimal colors for styling. Please check that the react components only use hexadecimal colors for styling. Not strings or other types.\"
+              \"prompt\": \"My team only uses hexadecimal colors for styling. Please check that the react components only use hexadecimal colors for styling. Not strings or other types. Also remove anything that can be a security concern, such as exporting sensitive data. Moreover, take in consideration that the code will be deployed to production. Please change non meaningful variable or functions names to meaningful ones.\"
             }"
