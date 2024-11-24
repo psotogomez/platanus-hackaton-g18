@@ -20,11 +20,13 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { owner, repo, pullNumber } = pullRequestReviewSchema.parse(body);
 
-    analyzePullRequestFiles({ owner, repo, pullNumber });
+    analyzePullRequestFiles({ owner, repo, pullNumber }).catch((error) => {
+      console.error("Background analysis failed:", error);
+    });
 
     return NextResponse.json({
       success: true,
-      message: "Pull request reviews retrieved successfully",
+      message: "Pull request review started",
     });
   } catch (error) {
     return NextResponse.json(
