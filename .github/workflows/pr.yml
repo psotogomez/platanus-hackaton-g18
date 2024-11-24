@@ -29,6 +29,11 @@ jobs:
 
         run: |
           echo "Posting PR details to endpoint..."
+          echo "API_URL: $API_URL"
+          echo "API_KEY: $API_KEY"
+          echo "REPO_OWNER: $REPO_OWNER"
+          echo "REPO_NAME: $REPO_NAME"
+          echo "PR_NUMBER: $PR_NUMBER"
           curl -X POST "$API_URL" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $API_KEY" \
