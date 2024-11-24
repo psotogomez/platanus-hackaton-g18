@@ -32,5 +32,6 @@ jobs:
               \"pullNumber\": \"${{ github.event.pull_request.number }}\",
               \"branchName\": \"${{ github.event.pull_request.head.ref }}\",
               \"meaningfulVariableNames\": true,
-              \"codeSecurityBreaches\": true
+              \"codeSecurityBreaches\": true,
+              \"prompt\": \"My team only uses hexadecimal colors for styling. Please check that the react components only use hexadecimal colors for styling. Not strings or other types.\"
             }"
