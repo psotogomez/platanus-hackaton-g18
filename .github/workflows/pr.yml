@@ -1,0 +1,36 @@
+name: Peer Rhino Automatic Pull Request Review
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  post-request:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Post PR Details
+        env:
+          API_URL: "https://platanus-hackaton-g18.vercel.app/api/pull-request-review"
+          API_KEY: "sk-proj-1234567890"
+          REPO_OWNER: "{{ github.repository_owner }}"
+          REPO_NAME: "{{ github.event.repository.name }}"
+          PR_NUMBER: "{{ github.event.pull_request.number }}"
+          BRANCH_NAME: "{{ github.event.pull_request.head.ref }}"
+        run: |
+          echo "Posting PR details to endpoint..."
+          curl -X POST "$API_URL" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $API_KEY" \
+            -d "{
+              \"owner\": \"${{ github.repository_owner }}\",
+              \"repo\": \"${{ github.event.repository.name }}\",
+              \"pullNumber\": \"${{ github.event.pull_request.number }}\",
+              \"branchName\": \"${{ github.event.pull_request.head.ref }}\",
+              \"meaningfulVariableNames\": true,
+              \"codeSecurityBreaches\": true
+            }"

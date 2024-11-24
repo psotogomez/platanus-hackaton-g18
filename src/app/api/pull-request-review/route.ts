@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "Pull request reviews retrieved successfully",
+      message: "Pull request review started",
     });
   } catch (error) {
     return NextResponse.json(
