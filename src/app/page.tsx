@@ -3,6 +3,10 @@ import { WithPullRequestReviewConfigurationForm } from "./_components/with-pull-
 import { PullRequestReviewConfigurationForm } from "./_components/pull-request-review-configuration-form";
 
 export default function Home() {
+  const function1 = (a: number, b: number) => {
+    return a + b;
+  };
+
   return (
     <div className="flex flex-col size-full justify-center items-center gap-8">
       <div className="flex flex-col gap-2 justify-center items-center">
@@ -17,6 +21,7 @@ export default function Home() {
           <PullRequestReviewConfigurationForm />
         </WithPullRequestReviewConfigurationForm>
       </div>
+      <H1>{function1(1, 2)}</H1>
     </div>
   );
 }
