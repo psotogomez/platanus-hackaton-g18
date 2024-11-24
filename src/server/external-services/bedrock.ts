@@ -1,43 +1,50 @@
-import { BedrockRuntimeClient, ConverseCommand } from "@aws-sdk/client-bedrock-runtime";
+import {
+  BedrockRuntimeClient,
+  ConverseCommand,
+} from "@aws-sdk/client-bedrock-runtime";
 
-function parseCommentAndCode(responseText: string) {
-  // Regular expression to match content between the ``` markers
-  const codeRegex = /```([\s\S]*?)```/;
+// function parseCommentAndCode(responseText: string) {
+//   // Regular expression to match content between the ``` markers
+//   const codeRegex = /```([\s\S]*?)```/;
 
-  // Extract the first code block
-  const codeMatch = responseText.match(codeRegex);
-  const code = codeMatch ? codeMatch[1] : ""; // If there's no code block, return an empty string
+//   // Extract the first code block
+//   const codeMatch = responseText.match(codeRegex);
+//   const code = codeMatch ? codeMatch[1] : ""; // If there's no code block, return an empty string
 
-  // Remove the code block to get the comment
-  const comment = responseText.replace(codeRegex, "").trim();
+//   // Remove the code block to get the comment
+//   const comment = responseText.replace(codeRegex, "").trim();
 
-  // Return the parsed comment and the single code block
-  return {
-    comment,
-    code,
-  };
-}
+//   // Return the parsed comment and the single code block
+//   return {
+//     comment,
+//     code,
+//   };
+// }
 
 const client = new BedrockRuntimeClient({
-    region: `${process.env.AWS_DEFAULT_REGION}`,
-    credentials: {
-        accessKeyId: `${process.env.AWS_ACCESS_KEY_ID}`,
-        secretAccessKey: `${process.env.AWS_SECRET_ACCESS_KEY}`
-    }
+  region: `${process.env.AWS_DEFAULT_REGION}`,
+  credentials: {
+    accessKeyId: `${process.env.AWS_ACCESS_KEY_ID}`,
+    secretAccessKey: `${process.env.AWS_SECRET_ACCESS_KEY}`,
+  },
 });
 
-async function invokeModel(instruction: string, fileContent: string, afterChange: string) {
+async function invokeModel(
+  instruction: string,
+  fileContent: string,
+  afterChange: string
+) {
   const modelId = "anthropic.claude-3-5-sonnet-20240620-v1:0";
 
   interface Prompt {
-      text: string;
-    }
+    text: string;
+  }
 
   const systemPrompt: Prompt[] = [
     {
       text: `You are an expert software developer and architect. You are an expert in software reliability, security, scalability, and performance. Your task is to review GitHub pull request changes and suggest changes to those specific lines (only if they are fundamentally needed, else not) based on an instruction on what it needs to look for.
   Your output needs to be in GitHub-flavored markdown and changes should only be made if they are fundamentally needed because the original code breaches the indications to review in the instruction. If so, you must indicate a comment as for why the change was made followed by the changes in code enclosed in three backticks (\`\`\`) at the start and the end of the code block.
-  Additions will be indicated by a preceding plus sign (+) and deletions by a minus sign (-). Your output code must not include these indications but rather only feature the changed code snippet as it would look like once the pull request got merged. Only output the comment first and then the code, no comments afterwards.`
+  Additions will be indicated by a preceding plus sign (+) and deletions by a minus sign (-). Your output code must not include these indications but rather only feature the changed code snippet as it would look like once the pull request got merged. Only output the comment first and then the code, no comments afterwards.`,
     },
   ];
 
@@ -161,26 +168,31 @@ async function invokeModel(instruction: string, fileContent: string, afterChange
     temperature: 0.3,
   };
 
-  try{
+  try {
     const response = await client.send(
-        new ConverseCommand({
-            modelId,
-            messages: conversation,
-            system: systemPrompt,
-            inferenceConfig: additionalParameters,
-        })
+      new ConverseCommand({
+        modelId,
+        messages: conversation,
+        system: systemPrompt,
+        inferenceConfig: additionalParameters,
+      })
     );
 
-    if (!response || !response.output || !response.output.message || !response.output.message.content) {
+    if (
+      !response ||
+      !response.output ||
+      !response.output.message ||
+      !response.output.message.content
+    ) {
       throw new Error("Failed to retrieve response from model");
     }
 
-    const responseText: string = response.output?.message?.content[0]?.text ?? "No response received.";
-    console.log(responseText)
+    const responseText: string =
+      response.output?.message?.content[0]?.text ?? "No response received.";
+    console.log(responseText);
   } catch (error) {
     console.error("Error while sending the request:", error);
   }
-
 }
 
 export default invokeModel;
