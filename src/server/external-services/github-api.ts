@@ -18,7 +18,6 @@ export class GithubApi {
     while (lineIndex < lines.length){
       const line = lines[lineIndex];
       let match = line.match(/@@ -(\d+),(\d+) \+(\d+),(\d+) @@/);
-      console.log(match);
       if (match) {
         const newStart = parseInt(match[3], 10);
         const newLength = parseInt(match[4], 10);
@@ -34,13 +33,11 @@ export class GithubApi {
         placements.push({id: changeIndex, lineToAddComment: newStart, commentLength: newLength});
       }
     }
-    console.log(changes);
-    console.log(placements);
     return { changes, placements };
   }
 
-  async getPRFiles(props: { owner: string; repo: string; pullNumber: string }) {
-    const { owner, repo, pullNumber } = props;
+  async getPRFiles(props: { owner: string; repo: string; pullNumber: string }) {    const { owner, repo, pullNumber } = props;
+
 
     const url = `${this.GITHUB_API_BASE_URL}/repos/${owner}/${repo}/pulls/${pullNumber}/files`;
     try {
@@ -49,16 +46,17 @@ export class GithubApi {
           Authorization: `Bearer ${this.GITHUB_TOKEN}`,
           Accept: "application/vnd.github.v3+json",
         },
-      });
+      })
       return response.json();
     } catch (error) {
       throw error;
     }
   }
 
-  async getFileContent(props: { owner: string; repo: string; path: string }) {
-    const { owner, repo, path } = props;
-    const url = `${this.GITHUB_API_BASE_URL}/repos/${owner}/${repo}/contents/${path}`;
+  async getFileContent(props: { owner: string; repo: string; path: string, branch: string }) {
+    const { owner, repo, path, branch } = props;
+    const url = `${this.GITHUB_API_BASE_URL}/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
+    console.log(`Fetching file content from ${url}`);
     try {
       const response = await fetch(url, {
         headers: {

@@ -6,6 +6,7 @@ const pullRequestReviewSchema = z.object({
   owner: z.string(),
   repo: z.string(),
   pullNumber: z.string(),
+  branchName: z.string(),
   prompt: z.string().optional(),
 });
 
@@ -18,9 +19,9 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { owner, repo, pullNumber } = pullRequestReviewSchema.parse(body);
+    const { owner, repo, pullNumber, branchName, prompt } = pullRequestReviewSchema.parse(body);
 
-    await analyzePullRequestFiles({ owner, repo, pullNumber });
+    await analyzePullRequestFiles({ owner, repo, pullNumber, branchName, prompt });
 
     return NextResponse.json({
       success: true,
