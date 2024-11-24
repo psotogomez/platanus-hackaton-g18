@@ -18,7 +18,9 @@ import Logo from "@/public/assets/peer-rihno.png";
 export default function Home() {
   return (
     <div className="relative size-full min-h-screen overflow-hidden bg-[#7e9eff]">
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden" style={{
+        backgroundColor: "red"
+      }}>
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-[#a5bae2] to-[#93aeff]"
           animate={{
