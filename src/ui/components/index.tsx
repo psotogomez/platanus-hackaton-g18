@@ -5,3 +5,4 @@ export * from "./button";
 export * from "./text-area";
 export * from "./yaml-text-box";
 export * from "./toast";
+export * from "./dialog";

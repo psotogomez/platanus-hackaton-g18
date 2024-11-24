@@ -20,7 +20,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@/ui/*": ["./src/ui/*"]
+      "@/ui/*": ["./src/ui/*"],
+      "@/public/*": ["./public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/server/external-services/bedrock.ts"],

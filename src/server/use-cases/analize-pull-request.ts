@@ -5,9 +5,18 @@ export const analyzePullRequestFiles = async (props: {
   owner: string;
   repo: string;
   pullNumber: string;
+  meaningfulVariableNames: boolean;
+  codeSecurityBreaches: boolean;
   prompt?: string;
 }) => {
-  const { owner, repo, pullNumber } = props;
+  const {
+    owner,
+    repo,
+    pullNumber,
+    meaningfulVariableNames,
+    codeSecurityBreaches,
+    prompt,
+  } = props;
   console.log("Analyzing PR files...");
   const githubApi = new GithubApi();
 
@@ -38,7 +47,13 @@ export const analyzePullRequestFiles = async (props: {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ fileContent, changeBlock: afterChange }),
+          body: JSON.stringify({
+            fileContent,
+            changeBlock: afterChange,
+            prompt,
+            meaningfulVariableNames,
+            codeSecurityBreaches,
+          }),
         }
       );
       if (response.status !== 200) {

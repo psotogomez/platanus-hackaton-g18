@@ -11,37 +11,26 @@ jobs:
 
     steps:
       - name: Checkout Code
-
         uses: actions/checkout@v3
 
       - name: Post PR Details
-
         env:
           API_URL: "https://platanus-hackaton-g18.vercel.app/api/pull-request-review"
-
           API_KEY: "sk-proj-1234567890"
-
-          REPO_OWNER: ${{ github.repository_owner }}
-
-          REPO_NAME: ${{ github.event.repository.name }}
-
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-
+          REPO_OWNER: "{{ github.repository_owner }}"
+          REPO_NAME: "{{ github.event.repository.name }}"
+          PR_NUMBER: "{{ github.event.pull_request.number }}"
+          BRANCH_NAME: "{{ github.event.pull_request.head.ref }}"
         run: |
           echo "Posting PR details to endpoint..."
-          echo "API_URL: $API_URL"
-          echo "API_KEY: $API_KEY"
-          echo "REPO_OWNER: $REPO_OWNER"
-          echo "REPO_NAME: $REPO_NAME"
-          echo "PR_NUMBER: $PR_NUMBER"
           curl -X POST "$API_URL" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $API_KEY" \
-            -d '{
-              "owner": "'$REPO_OWNER'",
-              "repo": "'$REPO_NAME'",
-              "pullNumber": "'$PR_NUMBER'",
-              "meaningfulVariableNames": true,
-              "codeSecurityBreaches": true,
-              "prompt": "Only use hexadecimal code for styling component colors."
-            }'
+            -d "{
+              \"owner\": \"${{ github.repository_owner }}\",
+              \"repo\": \"${{ github.event.repository.name }}\",
+              \"pullNumber\": \"${{ github.event.pull_request.number }}\",
+              \"branchName\": \"${{ github.event.pull_request.head.ref }}\",
+              \"meaningfulVariableNames\": true,
+              \"codeSecurityBreaches\": true
+            }"
