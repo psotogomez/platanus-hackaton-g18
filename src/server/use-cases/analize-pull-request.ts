@@ -7,12 +7,12 @@ export const analyzePullRequestFiles = async (props: {
   pullNumber: string;
   prompt?: string;
 }) => {
-  const { owner, repo, pullNumber, prompt } = props;
+  const { owner, repo, pullNumber } = props;
   console.log("Analyzing PR files...");
   const githubApi = new GithubApi();
 
   const files = await githubApi.getPRFiles({ owner, repo, pullNumber });
-  const allFileChanges : AllFileChanges = {};
+  const allFileChanges: AllFileChanges = {};
   for (const file of files) {
     const { content, lines } = await githubApi.getFileContent({
       owner,
@@ -20,21 +20,29 @@ export const analyzePullRequestFiles = async (props: {
       path: file.filename,
     });
     if (lines > 500) {
-      console.log(`Skipping file ${file.filename} as it has more than 500 lines.`);
+      console.log(
+        `Skipping file ${file.filename} as it has more than 500 lines.`
+      );
       continue;
     }
-    const { changes, placements } = await githubApi.parseGitPatch(file.patch, content);
+    const { changes, placements } = await githubApi.parseGitPatch(
+      file.patch,
+      content
+    );
     const responseFileChanges: FileChange[] = [];
     for (const { id, afterChange, fileContent } of changes) {
-      const response = await fetch('https://mocl39vmwl.execute-api.us-east-1.amazonaws.com/develop', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fileContent, changeBlock: afterChange }),
-      });
+      const response = await fetch(
+        "https://mocl39vmwl.execute-api.us-east-1.amazonaws.com/develop",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ fileContent, changeBlock: afterChange }),
+        }
+      );
       if (response.status !== 200) {
-        throw new Error('Failed to analyze the file');
+        throw new Error("Failed to analyze the file");
       }
       const { code, comment } = await response.json();
       const fileChanges: FileChange = { id, code, comment };
@@ -55,15 +63,16 @@ export const analyzePullRequestFiles = async (props: {
     const latestCommitHash = commitShas[commitShas.length - 1];
     console.log(`Latest commit hash: ${latestCommitHash}`);
 
-    Object.entries(allFileChanges).forEach(([filename, fileChanges ]) => {
-      fileChanges.forEach(async ({id, code}) => {
+    Object.entries(allFileChanges).forEach(([filename, fileChanges]) => {
+      fileChanges.forEach(async ({ id, code }) => {
         const filePlacement = placements.find((p) => p.id === id);
         console.log("filePlacement", filePlacement);
         console.log("code", code);
         console.log("filename", filename);
         if (!filePlacement) {
           throw new Error("File placement not found");
-        } if (code === "" || !code) {
+        }
+        if (code === "" || !code) {
           return;
         }
         const body = `\`\`\`suggestion\n${code}`;
