@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { owner, repo, pullNumber } = pullRequestReviewSchema.parse(body);
 
-    await analyzePullRequestFiles({ owner, repo, pullNumber });
+    analyzePullRequestFiles({ owner, repo, pullNumber });
 
     return NextResponse.json({
       success: true,
