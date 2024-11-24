@@ -3,12 +3,7 @@
 import { WithPullRequestReviewConfigurationForm } from "./_components/with-pull-request-review-configuration-form";
 import { PullRequestReviewConfigurationForm } from "./_components/pull-request-review-configuration-form";
 import { motion } from "framer-motion";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  Button,
-} from "@/ui/components";
+import { Dialog, DialogContent, DialogTrigger, Button } from "@/ui/components";
 import { H1, H3 } from "@/ui/components/typography";
 import { Github } from "lucide-react";
 import Link from "next/link";
@@ -18,12 +13,7 @@ import Logo from "@/public/assets/peer-rihno.png";
 export default function Home() {
   return (
     <div className="relative size-full min-h-screen overflow-hidden bg-[#7e9eff]">
-      <div
-        className="absolute inset-0 overflow-hidden"
-        style={{
-          backgroundColor: "red",
-        }}
-      >
+      <div className="absolute inset-0 overflow-hidden">
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-[#a5bae2] to-[#93aeff]"
           animate={{
@@ -74,8 +64,8 @@ export default function Home() {
           <div className="flex flex-col w-full gap-8">
             <H1 className="text-center !text-background">
               Elevate your code quality with{" "}
-            <span className="text-blue-700">automated pull request</span> reviews
-            powered by AI.
+              <span className="text-blue-700">automated pull request</span>{" "}
+              reviews powered by AI.
             </H1>
             <H3 className="text-center !text-background font-normal">
               Seamlessly integrated with GitHub Actions, our tool ensures{" "}
@@ -105,7 +95,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
